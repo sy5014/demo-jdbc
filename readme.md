@@ -1,3 +1,5 @@
+https://github.com/MusicXi/demo-jdbc.git
+
 代码生成工具的设计思路及原则
 1.生成代码顺序,采用人为编写代码的顺序,即依次从持久层到到控制层及显示层。 测试顺序也是采用这个方案
 	数据库table->bean->dao->service->controller->前端代码
