@@ -1,6 +1,6 @@
 package com.myron.db.jdbc.generator;
 
-import java.awt.Desktop;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -59,7 +59,9 @@ public class MyronGenerator {
 		String driverClassName="com.mysql.jdbc.Driver";
 		
 		String tableName="qrtz_job_details";				//选择表名
-		String filePath="E:"+File.separator+"temp";		//生成文件的目录
+		//"D:\007\develop\workspace\demo-quartz\src\main\java\"
+//		String filePath="E:"+File.separator+"temp";		//生成文件的目录
+		String filePath="D:\\007\\develop\\workspace\\demo-quartz";		//生成文件的目录
 		String[] codeTypes={BEAN,MAPPER_XML,DAO,SERVICE,SERVICE_IMPL,CONTROLLER};		//生成源代码的类型(取决模板类型)
 		String[] frontCodeTypes={EXT_JSP, EXT_APP, EXT_CONTROLLER, EXT_MODEL, EXT_STORE, EXT_VIEW_PANEL,EXT_VIEW_WIN,EXT_VIEW_WIN_IMPORT};
 		String projectName="com.cnc.cloud";				//生成后端的项目名
@@ -72,7 +74,7 @@ public class MyronGenerator {
 		MyronDataSource dataSource=new MyronDataSource(url, username, password, driverClassName);
 		Table table=getTableInfo(dataSource,tableName);
 		table.setProjectName(projectName);
-		table.setJspContextPath("/product/system/"+StringUtils.uncapitalize(table.getClassName())+"Manager");
+		table.setJspContextPath("/"+StringUtils.uncapitalize(table.getClassName()));
 		logger.info("获取元数据:{}",table);
 		
 		
@@ -90,19 +92,19 @@ public class MyronGenerator {
 		}
 		logger.info("完成'{}'源代码",table.getClassName());
 		
-		logger.info("开始生成'{}'的前端{}源代码",table.getClassName(), Arrays.toString(frontCodeTypes));
-		for (String type : frontCodeTypes) {
-			table.setPackageName(projectName+"."+type);
-			try {
-				exportFrontSourceCode(table,filePath,type);
-				logger.info("生成'{}'", type);
-			} catch (TemplateException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		logger.info("完成'{}'源代码",table.getClassName());
+//		logger.info("开始生成'{}'的前端{}源代码",table.getClassName(), Arrays.toString(frontCodeTypes));
+//		for (String type : frontCodeTypes) {
+//			table.setPackageName(projectName+"."+type);
+//			try {
+//				exportFrontSourceCode(table,filePath,type);
+//				logger.info("生成'{}'", type);
+//			} catch (TemplateException e) {
+//				e.printStackTrace();
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+//		}
+//		logger.info("完成'{}'源代码",table.getClassName());
 	}
 	
 	/**
@@ -163,7 +165,7 @@ public class MyronGenerator {
 		template.process(map, out);
 		
 		//弹出生成的源代码文件夹
-		Desktop.getDesktop().open(filePath);
+		//Desktop.getDesktop().open(filePath);
 	}
 	
 	
@@ -203,7 +205,7 @@ public class MyronGenerator {
 		template.process(map, out);
 
 		// 弹出生成的源代码文件夹
-		Desktop.getDesktop().open(filePath);
+		//Desktop.getDesktop().open(filePath);
 	}
 	
 	/**
@@ -342,7 +344,7 @@ public class MyronGenerator {
 			for (int i = 0; i < paths.length; i++) {
 				filePath = filePath + File.separator + paths[i];
 			}
-			filePath = File.separator + "src" + filePath;
+			filePath = File.separator + "src/main/java" + filePath;
 			return filePath;
 		}
 		return "";

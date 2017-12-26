@@ -2,10 +2,15 @@ package ${table.projectName}.service;
 
 import java.util.List;
 import java.util.Map;
-import com.myron.db.mybatis.bean.Page;
+import com.github.pagehelper.Page;
 
 import ${table.projectName}.bean.${table.className};
 
+/**
+ * 
+ * @author linrx1
+ *
+ */
 public interface ${table.className}Service {
 	//增删改
 	Map<String, Object> create${table.className}(${table.className} ${table.className?uncap_first}) throws Exception;

@@ -1,38 +1,18 @@
 package  ${table.projectName}.controller;
 
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.beanutils.BeanUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
-
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.myron.common.util.ExcelUtil;
-import com.myron.common.util.JsonUtil;
-import com.myron.common.util.StringUtils;
-import com.myron.db.mybatis.bean.ExtjsPage;
+import com.github.pagehelper.Page;
 import ${table.projectName}.bean.${table.className};
 import ${table.projectName}.service.${table.className}Service;
 
@@ -40,37 +20,33 @@ import ${table.projectName}.service.${table.className}Service;
 @Controller
 @RequestMapping("${table.jspContextPath}")
 public class ${table.className}Controller {
-	private static final Logger logger = LoggerFactory.getLogger(${table.className}Controller.class);
+	//private static final Logger logger = LoggerFactory.getLogger(${table.className}Controller.class);
 	
 	@Autowired
 	private ${table.className}Service ${table.className?uncap_first}Service;
 	
 
-	@RequestMapping("findListByPage.do")
+	@RequestMapping("/listByPage")
 	@ResponseBody
-	public  Map<String, Object> findListByPage(String filter, ${table.className} ${table.className?uncap_first}, ExtjsPage<Map<String, Object>> page, HttpServletRequest request) {
+	public  Map<String, Object> listByPage(String filter, ${table.className} ${table.className?uncap_first}, Page<Map<String, Object>> page, HttpServletRequest request) {
 		Map<String, Object> map = new HashMap<>();
-		
-		if (! StringUtils.isBlank(filter)) {
-			${table.className?uncap_first} = JsonUtil.toBean(filter, ${table.className}.class);			
-		}
 		//设置默认排序属性
 		//page.setDefaultSort("createTime", "desc");
-		page = (ExtjsPage<Map<String, Object>>)this.${table.className?uncap_first}Service.findMapListByPage(${table.className?uncap_first}, page);
-		map.put("total", page.getTotalCount());
-		map.put("records", page.getResultList());
+		page = this.${table.className?uncap_first}Service.findMapListByPage(${table.className?uncap_first}, page);
+		map.put("total", page.getTotal());
+		map.put("records", page.getResult());
 		return map;
 	}
 	
-	@RequestMapping("create${table.className}.do")
+	@RequestMapping("/add")
 	@ResponseBody
-	public Map<String, Object> create${table.className}(@RequestBody List<${table.className}> ${table.className?uncap_first}List, HttpServletRequest request) throws Exception {
+	public Map<String, Object> add${table.className}(@RequestBody List<${table.className}> ${table.className?uncap_first}List, HttpServletRequest request) throws Exception {
 		Map<String, Object> map = new HashMap<>();
 		map = this.${table.className?uncap_first}Service.create${table.className}(${table.className?uncap_first}List);
 		return map;
 	}
 	
-	@RequestMapping("update${table.className}.do")
+	@RequestMapping("/edit")
 	@ResponseBody
 	public Map<String, Object> update${table.className}(@RequestBody List<${table.className}> ${table.className?uncap_first}List, HttpServletRequest request) throws Exception {
 		Map<String, Object> map = new HashMap<>();
@@ -78,7 +54,7 @@ public class ${table.className}Controller {
 		return map;
 	}
 	
-	@RequestMapping("delete${table.className}.do")
+	@RequestMapping("/delete")
 	@ResponseBody
 	public Map<String, Object> delete${table.className}(@RequestBody List<${table.className}> ${table.className?uncap_first}List, HttpServletRequest request) throws Exception{
 		Map<String, Object> map = new HashMap<>();
@@ -92,7 +68,7 @@ public class ${table.className}Controller {
 	 * @param resp
 	 * @param model
 	 */
-	@RequestMapping("exportExcel.do")
+/*	@RequestMapping("/exportExcel")
 	public void exportExcel(HttpServletRequest req, HttpServletResponse resp, ModelMap model){
 		
 		resp.setContentType("application/x-msdownload");
@@ -114,7 +90,7 @@ public class ${table.className}Controller {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 	
 	/**
 	 * excel导入
@@ -124,7 +100,7 @@ public class ${table.className}Controller {
 	 * @param model
 	 * @throws IOException
 	 */
-	@RequestMapping("importExcel.do")
+/*	@RequestMapping("/importExcel")
 	@ResponseBody
 	public Map<String, Object> importExcel(HttpServletRequest req, 
 			@RequestParam(value="excelFile", required=false) MultipartFile file) throws Exception{
@@ -150,7 +126,7 @@ public class ${table.className}Controller {
 		map.put("tip", "导入成功啦啦啦");
 		map.put("success", true);
 		return map;
-	}
+	}*/
 
 	/**
 	 * 下载模板
@@ -158,8 +134,8 @@ public class ${table.className}Controller {
 	 * @param req
 	 * @param resp
 	 */
-	@SuppressWarnings("unchecked")
-	@RequestMapping("downloadTemplate.do")
+/*	@SuppressWarnings("unchecked")
+	@RequestMapping("/downloadTemplate")
 	public void downloadTemplate(String model,HttpServletRequest req, HttpServletResponse resp){
 		Map<String, String> fieldName;
 		try {
@@ -193,7 +169,7 @@ public class ${table.className}Controller {
 		
 	
 	}
-	
+	*/
 	
 	
 	
