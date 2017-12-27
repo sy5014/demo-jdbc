@@ -29,9 +29,8 @@ public interface ${table.className}Dao {
 	
 	//查询记录列表
 	List<${table.className}> selectList(${table.className} ${table.className?uncap_first});
-	List<${table.className}> selectListByPage(Map<String, Object> map);	
 	
 	List<Map<String, Object>> selectMapList(${table.className} ${table.className?uncap_first});
-	List<Map<String, Object>> selectMapListByPage(Map<String, Object> map);
+
 
 }
