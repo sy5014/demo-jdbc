@@ -1,7 +1,6 @@
 package  ${table.projectName}.controller;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,7 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 //import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.github.pagehelper.Page;
@@ -33,32 +31,32 @@ public class ${table.className}Controller {
 		//设置默认排序属性
 		//page.setDefaultSort("createTime", "desc");
 		page = this.${table.className?uncap_first}Service.findMapListByPage(${table.className?uncap_first}, page);
-		map.put("total", page.getTotal());
-		map.put("records", page.getResult());
+		map.put("studentdata", page);
+	    map.put("number", page.getTotal());
 		return map;
 	}
 	
 	@RequestMapping("/add")
 	@ResponseBody
-	public Map<String, Object> add${table.className}(@RequestBody List<${table.className}> ${table.className?uncap_first}List, HttpServletRequest request) throws Exception {
+	public Map<String, Object> add${table.className}(${table.className} ${table.className?uncap_first}, HttpServletRequest request) throws Exception {
 		Map<String, Object> map = new HashMap<>();
-		map = this.${table.className?uncap_first}Service.create${table.className}(${table.className?uncap_first}List);
+		map = this.${table.className?uncap_first}Service.create${table.className}(${table.className?uncap_first});
 		return map;
 	}
 	
 	@RequestMapping("/edit")
 	@ResponseBody
-	public Map<String, Object> update${table.className}(@RequestBody List<${table.className}> ${table.className?uncap_first}List, HttpServletRequest request) throws Exception {
+	public Map<String, Object> update${table.className}(${table.className} ${table.className?uncap_first}, HttpServletRequest request) throws Exception {
 		Map<String, Object> map = new HashMap<>();
-		map = this.${table.className?uncap_first}Service.update${table.className}(${table.className?uncap_first}List);
+		map = this.${table.className?uncap_first}Service.update${table.className}(${table.className?uncap_first});
 		return map;
 	}
 	
 	@RequestMapping("/delete")
 	@ResponseBody
-	public Map<String, Object> delete${table.className}(@RequestBody List<${table.className}> ${table.className?uncap_first}List, HttpServletRequest request) throws Exception{
+	public Map<String, Object> delete${table.className}(${table.className} ${table.className?uncap_first}, HttpServletRequest request) throws Exception{
 		Map<String, Object> map = new HashMap<>();
-		map = this.${table.className?uncap_first}Service.delete${table.className}(${table.className?uncap_first}List);
+		map = this.${table.className?uncap_first}Service.delete${table.className}(${table.className?uncap_first});
 		return map;
 	}
 	
