@@ -256,7 +256,7 @@ public class MyronGenerator {
 		FreeMarkerConfigurer freeMarkerConfigurer=new FreeMarkerConfigurer();
 		
         //freeMarkerConfigurer.setTemplateLoaderPath("classpath:templates");
-        freeMarkerConfigurer.setTemplateLoaderPaths("classpath:templates/java/ibatis","classpath:templates/extjs");
+        freeMarkerConfigurer.setTemplateLoaderPaths("classpath:templates/java/mybatis","classpath:templates/mybatis");
         Properties freemarkerSettings = new Properties();
         freemarkerSettings.put("default_encoding", "UTF-8");
         freemarkerSettings.put("locale", "zh_CN");
