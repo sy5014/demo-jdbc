@@ -9,8 +9,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.myron.common.util.UuidUtils;
-import com.myron.db.mybatis.bean.Page;
+
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 
 import ${table.projectName}.bean.${table.className};
 import ${table.projectName}.dao.${table.className}Dao;
@@ -50,7 +51,7 @@ public class ${table.className}ServiceImpl  implements ${table.className}Service
 			//TODO 可修改主键生成Id方式
 			<#list table.columnList as column>
 		    <#if column.key == "PRI">
-		    ${table.className?uncap_first}.set${column.capitalizeCamelField}(UuidUtils.creatUUID());
+		    //${table.className?uncap_first}.set${column.capitalizeCamelField}(UuidUtils.creatUUID());
 		    <#break>
 		    </#if>	
 			</#list>
@@ -152,22 +153,17 @@ public class ${table.className}ServiceImpl  implements ${table.className}Service
 
 	@Override
 	public Page<Map<String, Object>> findMapListByPage(${table.className} ${table.className?uncap_first}, Page<Map<String, Object>> page) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("${table.className?uncap_first}", ${table.className?uncap_first});
-		map.put("page", page);
-		List<Map<String, Object>> list = this.${table.className?uncap_first}Dao.selectMapListByPage(map);
-		page.setResultList(list);
+		page = PageHelper.startPage(page.getPageNum(), page.getPageSize());
+		this.${table.className?uncap_first}Dao.selectMapList(${table.className?uncap_first});
 		return page;
 	}
 	
 	@Override
 	public Page<${table.className}> findListByPage(${table.className} ${table.className?uncap_first}, Page<${table.className}> page) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("${table.className?uncap_first}", ${table.className?uncap_first});
-		map.put("page", page);
-		List<${table.className}> list = this.${table.className?uncap_first}Dao.selectListByPage(map);
-		page.setResultList(list);
+		page = PageHelper.startPage(page.getPageNum(), page.getPageSize());
+		this.${table.className?uncap_first}Dao.selectList(${table.className?uncap_first});
 		return page;
+
 	}
 
 	@Override

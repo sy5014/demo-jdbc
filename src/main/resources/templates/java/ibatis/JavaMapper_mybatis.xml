@@ -45,12 +45,6 @@
   		select 
 	    <include refid="Base_Column_List" />
 	    from ${table.tableName} t
-  	</select>
-  	
-  	<select id="selectListByPage" resultMap="BaseResultMap">
-  		select 
-	    <include refid="Base_Column_List" />
-	    from ${table.tableName} t
 	    <where>
 	    <#list table.columnList as column>
 	    	<#if column.jdbcType =="VARCHAR">
@@ -64,15 +58,33 @@
 	    	</#if>
 	    </#list>
 	    </where>
-	    <if test="page.sortName != null and page.sortOrder!=null">
+		<!--
+		<if test="page.sortName != null and page.sortOrder!=null">
     	order by ${'$'}{page.sortName} ${'$'}{page.sortOrder} 
-		</if>
+		</if> -->
   	</select>
   	
   	<select id="selectMapList" resultMap="DataResultMap">
   		select 
 	    <include refid="Base_Column_List" />
 	    from ${table.tableName} t
+	    <where>
+	    <#list table.columnList as column>
+	    	<#if column.jdbcType =="VARCHAR">
+	    	<if test="${column.camelField} != null and ${column.camelField} !='' ">
+	    	 	and t.${column.field} =${'#'}{${column.camelField}}
+	    	</if>
+	    	<#else>
+	    	<if test="${column.camelField} != null ">
+	    	 	and t.${column.field} =${'#'}{${column.camelField}}
+	    	</if>
+	    	</#if>
+	    </#list>
+	    </where>
+		<!--
+		<if test="page.sortName != null and page.sortOrder!=null">
+    	order by ${'$'}{page.sortName} ${'$'}{page.sortOrder}
+		</if> -->
   	</select>
   	
   	<select id="selectMapListByPage" resultMap="DataResultMap">
