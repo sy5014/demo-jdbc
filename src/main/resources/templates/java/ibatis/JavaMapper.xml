@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="dns.${table.className}Sql">
+
+	<resultMap id="${table.className}_Object" class="${table.projectName}.bean.${table.className}">
+		<#list table.columnList as column>
+	    <#if column.key=="PRI">
+	    <result column="${column.field}" property="${column.camelField}" jdbcType="${column.jdbcType}" /> 
+	    <#else>
+		<result column="${column.field}" property="${column.camelField}" jdbcType="${column.jdbcType}" />
+	    </#if>	
+		</#list>
+	</resultMap>
+	
+	<resultMap id="${table.className}_Map" class="HashMap">
+	    <#list table.columnList as column>
+	    <#if column.key=="PRI">
+	    <result column="${column.field}" property="${column.camelField}" jdbcType="${column.jdbcType}" /> 
+	    <#else>
+		<result column="${column.field}" property="${column.camelField}" jdbcType="${column.jdbcType}" />
+	    </#if>	
+		</#list>
+	</resultMap>	
+	
+	<sql id="${table.className}_Column_List" >
+	<#list table.columnList as column>
+		t.${column.field} <#if column_has_next>,</#if>
+    </#list>
+  	</sql>
+  	
+  	<select id="selectByPrimaryKey" resultMap="${table.className}_Object">
+  		select 
+	    <include refid="${table.className}_Column_List" />
+	    from ${table.tableName} t 
+	    <#list table.columnList as column>
+	    <#if column.key=="PRI">
+	    where t.${column.field} = ${'#'}${column.camelField}${'#'}
+	    <#break>
+	    </#if>
+	    </#list>	
+  	</select>
+  	
+  	<select id="selectList" resultMap="${table.className}_Object">
+  		select 
+	    <include refid="${table.className}_Column_List" />
+	    from ${table.tableName} t
+	    where 1 = 1
+	    <#list table.columnList as column>
+   		<isNotEmpty prepend="AND" property="${column.camelField}"> t.${column.field} = ${'#'}${column.camelField}${'#'}</isNotEmpty>
+	    </#list>
+  	</select>
+  	  	
+  	<select id="selectMapList" resultMap="${table.className}_Map">
+  		select 
+	    <include refid="${table.className}_Column_List" />
+	    from ${table.tableName} t
+	   	where 1 = 1
+	    <#list table.columnList as column>
+   		<isNotEmpty prepend="AND" property="${column.camelField}"> t.${column.field} = ${'#'}${column.camelField}${'#'}</isNotEmpty>
+	    </#list>
+  	</select>
+  	
+  	<select id="selectMapListByPage" resultMap="${table.className}_Map">
+  		select 
+	    <include refid="${table.className}_Column_List" />
+	    from ${table.tableName} t
+	    where 1 = 1
+	    <#list table.columnList as column>
+   		<isNotEmpty prepend="AND" property="${column.camelField}"> t.${column.field} = ${'#'}${column.camelField}${'#'}</isNotEmpty>
+	    </#list>
+  	</select>
+
+  	<insert id="insertSelective" parameterClass="${table.projectName}.bean.${table.className}" >
+		<#list table.columnList as column>
+			<#if column.key=="PRI">
+		<selectKey keyProperty="${column.camelField}" resultClass="int" type="post">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+			<#break>
+			</#if>
+		</#list>
+		insert into ${table.tableName} (
+		<dynamic prepend=" ">
+	      	<#list table.columnList as column>
+	    <isNotNull prepend="," property="${column.camelField}">${column.field}</isNotNull>
+		  	</#list>
+		</dynamic>
+		<![CDATA[ ) VALUES ( ]]>
+		<dynamic prepend=" ">
+	    	<#list table.columnList as column>
+	    <isNotNull prepend="," property="${column.camelField}">${'#'}${column.camelField}${'#'}</isNotNull>
+		  	</#list>
+	    </dynamic>
+	    <![CDATA[ ) ]]>
+    </insert>
+    
+    <delete id="deleteByPrimaryKey">
+		<#list table.columnList as column>
+	    <#if column.key=="PRI">
+	    delete from ${table.tableName} where ${column.field} = ${'#'}${column.camelField}${'#'}
+	    </#if>	
+		</#list>
+	</delete>
+  	
+	<update id="updateByPrimaryKeySelective" parameterClass="${table.projectName}.bean.${table.className}">
+		update ${table.tableName} 
+		<dynamic prepend="set"> 
+			<#list table.columnList as column>
+			<#if column.key!="PRI">
+		<isNotNull prepend="," property="${column.camelField}">${column.field} = ${'#'}${column.camelField}${'#'}</isNotNull>
+			</#if>
+		    </#list>
+		</dynamic>
+		<#list table.columnList as column>
+		    <#if column.key=="PRI">
+		where ${column.field} = ${'#'}${column.camelField}${'#'}
+		    </#if>
+	    </#list>
+	</update>
+	
+
+  	
+</sqlMap>

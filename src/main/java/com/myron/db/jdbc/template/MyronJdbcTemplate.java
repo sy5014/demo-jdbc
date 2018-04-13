@@ -62,12 +62,51 @@ public class MyronJdbcTemplate {
 			
 		});
 
-
-			
-			
-		
 	}
-	
+
+	/**
+	 * 构建测试数据
+	 * @param tableName
+	 * @param list
+	 * @param id
+	 */
+	public void buildTestDataById(String tableName, final List<Column> list, Object id) {
+		String key = this.getPrimaryKey(list);
+		//查询sql语句
+		String sql = "select * from ? where " + key + "=" + id;
+		logger.debug("=> excute:{}",sql);
+		logger.debug("=> param:{}",tableName);
+		sql=sql.replace("?", tableName);
+		this.selectList(sql, new ResultSetCallback<Column>() {
+
+			@Override
+			public List<Column> doResultSet(ResultSet rs) throws SQLException {
+				if(!rs.next()) {
+					return null;
+				}
+				//处理结果集
+				for (Column column: list) {
+					Object rawValue = rs.getObject(column.getField());
+					if (!"String".equals(column.getJavaType()) && "null".equalsIgnoreCase(String.valueOf(rawValue))){
+						logger.info("空值");
+						//rawValue = "";
+					}
+					System.out.println(column.getField() + "value:" + rawValue);
+					column.setValue(rawValue);
+				}
+				return null;
+			}
+		});
+
+	}
+
+	/**
+	 *  查询表的字段列表
+	 * @param sql
+	 * @param callback
+	 * @param <T>
+	 * @return
+	 */
 	public <T> List<T> selectList(String sql, ResultSetCallback<T> callback) {
 		PreparedStatement ps;
 		List<T> list = null;
@@ -81,6 +120,22 @@ public class MyronJdbcTemplate {
 			sessionFactory.close();
 		}
 		return list;
+	}
+
+	/**
+	 * TODO 获取表字段主键 确定是否要重整
+	 * @param list
+	 * @return
+	 */
+	private String getPrimaryKey(List<Column> list) {
+		String key = "";
+		for (Column column : list) {
+			if ("PRI".equalsIgnoreCase(column.getKey())) {
+				key = column.getField();
+				break;
+			}
+		}
+		return key;
 	}
 
 	public SqlSessionFactory getSessionFactory() {

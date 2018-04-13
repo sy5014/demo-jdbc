@@ -39,7 +39,8 @@ public class MyronGenerator {
 	private static final String SERVICE_IMPL="service.impl";
 	private static final String CONTROLLER="controller";
 	private static final String MAPPER_XML="dao.mapper";
-	
+	private static final String TEST="test";
+
 	//前端源代码类型
 	private static final String EXT_JSP="jsp";
 	private static final String EXT_APP="application";
@@ -53,16 +54,24 @@ public class MyronGenerator {
 
 	public static void main(String[] args) {
 		//提交连接参数
-		String url = "jdbc:mysql://192.168.15.71:63751/test?useUnicode=true&characterEncoding=UTF-8";
-		String username = "super_root_ws";
-		String password = "adminwangsu";
+//		jdbc.driverClass=com.mysql.jdbc.Driver
+//		jdbc.jdbcUrl=jdbc:mysql://10.8.203.41:63751/EasyScale?useUnicode=true&amp;characterEncoding=utf8
+//		jdbc.username=sbs
+//		jdbc.password=1jcSGbl723YOJV2wZaGWirM9r
+
+//		String url = "jdbc:mysql://192.168.15.71:63751/console";
+//		String username = "super_root_ws";
+//		String password = "adminwangsu";
+//		String driverClassName="com.mysql.jdbc.Driver";
+
+		String url = "jdbc:mysql://10.8.203.41:63751/EasyScale";
+		String username = "sbs";
+		String password = "1jcSGbl723YOJV2wZaGWirM9r";
 		String driverClassName="com.mysql.jdbc.Driver";
 		
-		String tableName="qrtz_job_details";				//选择表名
-		//"D:\007\develop\workspace\demo-quartz\src\main\java\"
-//		String filePath="E:"+File.separator+"temp";		//生成文件的目录
-		String filePath="D:\\007\\develop\\workspace\\demo-quartz";		//生成文件的目录
-		String[] codeTypes={BEAN,MAPPER_XML,DAO,SERVICE,SERVICE_IMPL,CONTROLLER};		//生成源代码的类型(取决模板类型)
+		String tableName="T_POLICY";				//选择表名
+		String filePath="D:"+File.separator+"temp";		//生成文件的目录
+		String[] codeTypes={TEST,BEAN,MAPPER_XML,DAO,SERVICE,SERVICE_IMPL,CONTROLLER};		//生成源代码的类型(取决模板类型)
 		String[] frontCodeTypes={EXT_JSP, EXT_APP, EXT_CONTROLLER, EXT_MODEL, EXT_STORE, EXT_VIEW_PANEL,EXT_VIEW_WIN,EXT_VIEW_WIN_IMPORT};
 		String projectName="com.cnc.cloud";				//生成后端的项目名
 		
@@ -72,7 +81,7 @@ public class MyronGenerator {
 		
 		//查询数据库表的列信息
 		MyronDataSource dataSource=new MyronDataSource(url, username, password, driverClassName);
-		Table table=getTableInfo(dataSource,tableName);
+		Table table=getTableInfo(dataSource,tableName, 143);
 		table.setProjectName(projectName);
 		table.setJspContextPath("/"+StringUtils.uncapitalize(table.getClassName()));
 		logger.info("获取元数据:{}",table);
@@ -92,19 +101,19 @@ public class MyronGenerator {
 		}
 		logger.info("完成'{}'源代码",table.getClassName());
 		
-//		logger.info("开始生成'{}'的前端{}源代码",table.getClassName(), Arrays.toString(frontCodeTypes));
-//		for (String type : frontCodeTypes) {
-//			table.setPackageName(projectName+"."+type);
-//			try {
-//				exportFrontSourceCode(table,filePath,type);
-//				logger.info("生成'{}'", type);
-//			} catch (TemplateException e) {
-//				e.printStackTrace();
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//		}
-//		logger.info("完成'{}'源代码",table.getClassName());
+/*		logger.info("开始生成'{}'的前端{}源代码",table.getClassName(), Arrays.toString(frontCodeTypes));
+		for (String type : frontCodeTypes) {
+			table.setPackageName(projectName+"."+type);
+			try {
+				exportFrontSourceCode(table,filePath,type);
+				logger.info("生成'{}'", type);
+			} catch (TemplateException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		logger.info("完成'{}'源代码",table.getClassName());*/
 	}
 	
 	/**
@@ -131,6 +140,31 @@ public class MyronGenerator {
 		table.setColumnList(columnList);
 		return table;
 	}
+
+	private static Table getTableInfo(MyronDataSource dataSource,
+									  String tableName, Object id) {
+		SqlSessionFactory sessionFactory = new SqlSessionFactoryBean(dataSource);
+		MyronJdbcTemplate jdbcTemplate = new MyronJdbcTemplate();
+		jdbcTemplate.setSessionFactory(sessionFactory);
+		List<Column> columnList = jdbcTemplate.queryColumn(tableName);
+		// 构造测试用例
+		if (id != null) {
+			jdbcTemplate.buildTestDataById(tableName, columnList, id);
+		}
+		// 数据库表信息
+		Table table = new Table();
+		table.setTableName(tableName);
+
+		// 是否过滤第一个前缀
+		int i = tableName.indexOf("_");
+		tableName = tableName.substring(i + 1);
+
+		System.out.println(tableName);
+		table.setClassName(StringUtils.toCapitalizeCamelCase(tableName));
+		table.setColumnList(columnList);
+		return table;
+	}
+
 	
 	/**
 	 * 输出fileType类型的java源代码
@@ -222,7 +256,7 @@ public class MyronGenerator {
 		FreeMarkerConfigurer freeMarkerConfigurer=new FreeMarkerConfigurer();
 		
         //freeMarkerConfigurer.setTemplateLoaderPath("classpath:templates");
-        freeMarkerConfigurer.setTemplateLoaderPaths("classpath:templates/java/extjs","classpath:templates/extjs");
+        freeMarkerConfigurer.setTemplateLoaderPaths("classpath:templates/java/ibatis","classpath:templates/extjs");
         Properties freemarkerSettings = new Properties();
         freemarkerSettings.put("default_encoding", "UTF-8");
         freemarkerSettings.put("locale", "zh_CN");
@@ -248,7 +282,11 @@ public class MyronGenerator {
 		String fileName = "undefined";
 		StringBuffer fileformat = new StringBuffer();
 
-		if (BEAN.equals(fileType)) {
+		if (TEST.equals(fileType)) {
+			fileformat.append("java");
+			fileName = table.getClassName()
+					+ StringUtils.toCapitalizeCamelCase(fileType);
+		} else if(BEAN.equals(fileType)) {
 			fileformat.append("java");
 			fileName = table.getClassName();
 		} else if (DAO.equals(fileType) || SERVICE.equals(fileType)
@@ -337,7 +375,8 @@ public class MyronGenerator {
 		// 如果java类型,添加src目录及子包目录
 		if (BEAN.equals(fileType) || DAO.equals(fileType)
 				|| MAPPER_XML.equals(fileType) || SERVICE.equals(fileType)
-				|| SERVICE_IMPL.equals(fileType) || CONTROLLER.equals(fileType)) {
+				|| SERVICE_IMPL.equals(fileType) || CONTROLLER.equals(fileType)
+				||TEST.equals(fileType)) {
 
 			String filePath = "";
 			String[] paths = table.getPackageName().split("\\.");
@@ -387,6 +426,8 @@ public class MyronGenerator {
 		String templateName = "";
 		if (BEAN.equals(fileType)) {
 			templateName = "JavaBean.java";
+		} else if (TEST.equals(fileType)) {
+			templateName = "JavaTest.java";
 		} else if (DAO.equals(fileType)) {
 			templateName = "JavaDao.java";
 		} else if (MAPPER_XML.equals(fileType)) {

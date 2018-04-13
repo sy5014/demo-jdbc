@@ -13,19 +13,33 @@ import com.myron.common.util.StringUtils;
  */
 public class Column {
 	//表的字段原始信息
-	private String field;		//表字段名
-	private String type;		//mysql字段类型
-	private String collation;	//
-	private String isNull;		//是否允许为空:YES/NO
-	private String key;			//是否为主键外键:PRI/MUL/""
+	/** 表字段名*/
+	private String field;
+
+	/** mysql字段类型*/
+	private String type;
+
+	/** 未知*/
+	private String collation;
+
+	/** 是否允许为空:YES/NO*/
+	private String isNull;
+
+	/** 是否为主键外键:PRI/MUL/"" */
+	private String key;
+	/***/
 	private String extra;
-	private String comment;		//表字段备注信息
+	/** 表字段备注信息*/
+	private String comment;
 	
 	//对应的column对应的java属性信息
 	private String camelField;  		//驼峰命名
 	private String capitalizeCamelField;//大写驼峰命名
 	private String javaType;			//java类型
 	private String jdbcType;
+
+	/**用例数据*/
+	private Object value;
 	
 	public String getField() {
 		return field;
@@ -88,6 +102,15 @@ public class Column {
 	public String getJdbcType() {
 		return jdbcType;
 	}
+
+	public Object getValue() {
+		return value;
+	}
+
+	public void setValue(Object value) {
+		this.value = value;
+	}
+
 	@Override
 	public String toString() {
 		return "Column [field=" + field

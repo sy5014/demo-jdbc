@@ -40,6 +40,15 @@ public class SqlSessionFactoryBean implements SqlSessionFactory{
 
 	@Override
 	public Connection getConnection() {
+		try {
+			Class.forName(this.dataSource.getDriverClassName());
+			this.connection=DriverManager.getConnection(this.dataSource.getUrl(), this.dataSource.getUsername(), this.dataSource.getPassword());
+			logger.debug("获取数据库连接");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return this.connection;
 	}
 	
