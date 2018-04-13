@@ -45,3 +45,6 @@ https://github.com/MusicXi/demo-jdbc.git
 2. XxxServiceImpl 添加、删除方法 添加获取主键
 3. 增加批添加操作
 
+### 2018-04-03
+1. 添加单元测试用例生成
+
