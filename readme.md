@@ -46,5 +46,5 @@ https://github.com/MusicXi/demo-jdbc.git
 3. 增加批添加操作
 
 ### 2018-04-03
-1. 添加单元测试用例生成
+1. 添加单元测试用例生成基础
 

@@ -141,6 +141,13 @@ public class MyronGenerator {
 		return table;
 	}
 
+	/**
+	 * 根据数据源获取tableName表的信息，及获取一条测试用例数据
+	 * @param dataSource
+	 * @param tableName
+	 * @param id
+	 * @return
+	 */
 	private static Table getTableInfo(MyronDataSource dataSource,
 									  String tableName, Object id) {
 		SqlSessionFactory sessionFactory = new SqlSessionFactoryBean(dataSource);
@@ -244,18 +251,14 @@ public class MyronGenerator {
 	
 	/**
 	 * 根据文件类型获取对应模板
-	 * @param fileType
+	 * @param
 	 * @return
-	 * @throws IOException 
-	 * @throws ParseException 
-	 * @throws MalformedTemplateNameException 
-	 * @throws TemplateNotFoundException 
+	 * @throws IOException
 	 * @throws TemplateException 
 	 */
 	private static Template getTemplate(String templateName) throws IOException, TemplateException {
 		FreeMarkerConfigurer freeMarkerConfigurer=new FreeMarkerConfigurer();
-		
-        //freeMarkerConfigurer.setTemplateLoaderPath("classpath:templates");
+
         freeMarkerConfigurer.setTemplateLoaderPaths("classpath:templates/java/mybatis","classpath:templates/mybatis");
         Properties freemarkerSettings = new Properties();
         freemarkerSettings.put("default_encoding", "UTF-8");
