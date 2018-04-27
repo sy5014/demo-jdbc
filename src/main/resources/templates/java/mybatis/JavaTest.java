@@ -13,7 +13,7 @@ public class ${table.className}Test {
 		${table.className} ${table.className?uncap_first} = new ${table.className}();
 		<#list table.columnList as column>
 		<#if column.javaType == 'String'>
-		${table.className?uncap_first}.set${column.capitalizeCamelField}("${column.value?default('"undefined"')}");
+		${table.className?uncap_first}.set${column.capitalizeCamelField}("${column.value?default('undefined')}");
 		<#elseif column.javaType == 'BigDecimal'>
 		${table.className?uncap_first}.set${column.capitalizeCamelField}(${column.value?default(0)});
 		<#elseif column.javaType == 'Date'>
