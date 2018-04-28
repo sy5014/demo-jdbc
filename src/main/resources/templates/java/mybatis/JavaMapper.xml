@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!--namespace用于接口绑定-->
-<mapper namespace="${table.projectName}.dao.${table.className}Dao">
+<mapper namespace="${table.projectName}.mapper.${table.className}Mapper">
 
 	<resultMap id="BaseResultMap" type="${table.projectName}.bean.${table.className}">
 		<#list table.columnList as column>

@@ -14,7 +14,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 
 import ${table.projectName}.bean.${table.className};
-import ${table.projectName}.dao.${table.className}Dao;
+import ${table.projectName}.mapper.${table.className}Mapper;
 import ${table.projectName}.service.${table.className}Service;
 
 @Service("${table.className?uncap_first}Service")
@@ -23,12 +23,12 @@ public class ${table.className}ServiceImpl  implements ${table.className}Service
 	private static final Logger LOGGER=LoggerFactory.getLogger(${table.className}ServiceImpl.class);
 	
 	@Autowired
-	private ${table.className}Dao ${table.className?uncap_first}Dao;
+	private ${table.className}Mapper ${table.className?uncap_first}Mapper;
 	
 	@Override
 	public Map<String, Object> create${table.className}(${table.className} ${table.className?uncap_first}) throws Exception{
 		Map<String, Object> resultMap = new HashMap<>();
-		int flag = this.${table.className?uncap_first}Dao.insertSelective(${table.className?uncap_first});
+		int flag = this.${table.className?uncap_first}Mapper.insertSelective(${table.className?uncap_first});
 		if (flag != 1) {
 			LOGGER.error("创建${table.className}失败! flag={}", flag);
 			throw new Exception("创建${table.className}失败!");
@@ -55,7 +55,7 @@ public class ${table.className}ServiceImpl  implements ${table.className}Service
 		    <#break>
 		    </#if>	
 			</#list>
-			if (this.${table.className?uncap_first}Dao.insertSelective(${table.className?uncap_first}) != 1) {
+			if (this.${table.className?uncap_first}Mapper.insertSelective(${table.className?uncap_first}) != 1) {
 				throw new Exception("新增数据失败!");
 			}
 		}
@@ -68,7 +68,7 @@ public class ${table.className}ServiceImpl  implements ${table.className}Service
 	@Override
 	public Map<String, Object> update${table.className}(${table.className} ${table.className?uncap_first}) throws Exception {
 		Map<String, Object> resultMap = new HashMap<>();
-		int flag = this.${table.className?uncap_first}Dao.updateByPrimaryKeySelective(${table.className?uncap_first});
+		int flag = this.${table.className?uncap_first}Mapper.updateByPrimaryKeySelective(${table.className?uncap_first});
 		if (flag != 1) {
 			LOGGER.error("更新${table.className} 失败! flag={}", flag);
 			throw new Exception("update${table.className} failure!");
@@ -87,7 +87,7 @@ public class ${table.className}ServiceImpl  implements ${table.className}Service
 		}
 		
 		for (${table.className} ${table.className?uncap_first} : ${table.className?uncap_first}List) {
-			if (this.${table.className?uncap_first}Dao.updateByPrimaryKeySelective(${table.className?uncap_first}) != 1){
+			if (this.${table.className?uncap_first}Mapper.updateByPrimaryKeySelective(${table.className?uncap_first}) != 1){
 				throw new Exception("修改数据失败!");
 			}
 		}
@@ -107,7 +107,7 @@ public class ${table.className}ServiceImpl  implements ${table.className}Service
 	    <#break>
 	    </#if>	
 		</#list>
-		int flag = this.${table.className?uncap_first}Dao.deleteByPrimaryKey(id);
+		int flag = this.${table.className?uncap_first}Mapper.deleteByPrimaryKey(id);
 		if (flag != 1) {
 			LOGGER.error("删除${table.className} 失败! flag={}", flag);
 			throw new Exception("delete${table.className} failure!");
@@ -135,7 +135,7 @@ public class ${table.className}ServiceImpl  implements ${table.className}Service
 		    <#break>
 		    </#if>	
 			</#list>
-			if (this.${table.className?uncap_first}Dao.deleteByPrimaryKey(id) != 1) {
+			if (this.${table.className?uncap_first}Mapper.deleteByPrimaryKey(id) != 1) {
 				throw new Exception("删除数据失败!");
 			}
 			count++;
@@ -148,32 +148,32 @@ public class ${table.className}ServiceImpl  implements ${table.className}Service
 	
 	@Override
 	public ${table.className} find${table.className}ByPrimaryKey(String id) {
-		return this.${table.className?uncap_first}Dao.selectByPrimaryKey(id);
+		return this.${table.className?uncap_first}Mapper.selectByPrimaryKey(id);
 	}
 
 	@Override
 	public Page<Map<String, Object>> findMapListByPage(${table.className} ${table.className?uncap_first}, Page<Map<String, Object>> page) {
 		page = PageHelper.startPage(page.getPageNum(), page.getPageSize());
-		this.${table.className?uncap_first}Dao.selectMapList(${table.className?uncap_first});
+		this.${table.className?uncap_first}Mapper.selectMapList(${table.className?uncap_first});
 		return page;
 	}
 	
 	@Override
 	public Page<${table.className}> findListByPage(${table.className} ${table.className?uncap_first}, Page<${table.className}> page) {
 		page = PageHelper.startPage(page.getPageNum(), page.getPageSize());
-		this.${table.className?uncap_first}Dao.selectList(${table.className?uncap_first});
+		this.${table.className?uncap_first}Mapper.selectList(${table.className?uncap_first});
 		return page;
 
 	}
 
 	@Override
 	public List<Map<String, Object>> findMapList(${table.className} ${table.className?uncap_first}) {
-		return this.${table.className?uncap_first}Dao.selectMapList(${table.className?uncap_first});
+		return this.${table.className?uncap_first}Mapper.selectMapList(${table.className?uncap_first});
 	}
 	
 	@Override
 	public List<${table.className}> findList(${table.className} ${table.className?uncap_first}){
-		return this.${table.className?uncap_first}Dao.selectList(${table.className?uncap_first});
+		return this.${table.className?uncap_first}Mapper.selectList(${table.className?uncap_first});
 	}
 
 

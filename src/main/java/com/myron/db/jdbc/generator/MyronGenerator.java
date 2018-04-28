@@ -35,7 +35,7 @@ public class MyronGenerator {
 	private static final String EXT_VIEW_WIN_IMPORT="app.view.win.import";
 
 	/**默认工程目录*/
-	private static final String DEFAULT_TARGET_PROJECT="src/main/java";
+	private static final String DEFAULT_TARGET_PROJECT = "src/main/java";
 
 	private String url;
 	private String username;
@@ -146,10 +146,11 @@ public class MyronGenerator {
 		logger.info("获取元数据:{}",table);
 		try {
 			for (JavaTypeEnum javaType : this.javaTypeSet) {
-				String type = javaType.getPrefix();
-				table.setPackageName(projectName + "." + type);
+//				String type = javaType.getPrefix();
+//				table.setPackageName(projectName + "." + type);
+				table.buildPackageByJavaType(javaType);
 				this.exportJavaSourceCode(table, filePath, javaType);
-				logger.info("生成'{}'", type);
+				logger.info("生成'{}'", javaType.getPrefix());
 			}
 		} catch (TemplateException e) {
 			e.printStackTrace();
@@ -204,7 +205,7 @@ public class MyronGenerator {
 
 
 		//生成源代码文件目录
-		String path = rootPath + table.javaPackageToPath();
+		String path = rootPath + File.separator + "src/main/java" + table.javaPackageToPath();
 		File filePath = new File(path);
 		if (!filePath.exists()){
 			filePath.mkdirs();
@@ -212,7 +213,7 @@ public class MyronGenerator {
 		logger.info("SourceCode Location:{}", filePath.getPath());
 
 		//创建源文件
-		File sourceFile =createJavaSourceFile(table,filePath,codeType);
+		File sourceFile = createJavaSourceFile(table,filePath,codeType);
 		FileOutputStream fos = new FileOutputStream(sourceFile);
 		Writer out = new OutputStreamWriter(fos, "UTF-8");
 
@@ -302,6 +303,7 @@ public class MyronGenerator {
 	private File createJavaSourceFile(Table table, File filePath,
 									  JavaTypeEnum javaType) throws IOException {
 		String tempalteName = javaType.getTemplateName();
+		// 替换名称中的"Java"用具体的对象。如: JavaMapper->UserMapper
 		tempalteName.replace("Java",table.getClassName());
 		File sourceFile = null;
 		sourceFile = new File(filePath.getPath() + File.separator + tempalteName.replace("Java",table.getClassName()));

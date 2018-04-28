@@ -9,7 +9,7 @@ import com.myron.db.mybatis.annotation.MyBatisRepository;
 import ${table.projectName}.bean.${table.className};
 
 @MyBatisRepository
-public interface ${table.className}Dao {
+public interface ${table.className}Mapper {
 	//增加记录
 	int insert(${table.className} ${table.className?uncap_first});
 	int insertSelective(${table.className} ${table.className?uncap_first});

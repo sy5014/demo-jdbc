@@ -433,7 +433,7 @@
 //		} else if (TEST.equals(fileType)) {
 //			templateName = "JavaTest.java";
 //		} else if (DAO.equals(fileType)) {
-//			templateName = "JavaDao.java";
+//			templateName = "JavaMapper.java";
 //		} else if (MAPPER_XML.equals(fileType)) {
 //			templateName = "JavaMapper.xml";
 //		} else if (SERVICE.equals(fileType)) {

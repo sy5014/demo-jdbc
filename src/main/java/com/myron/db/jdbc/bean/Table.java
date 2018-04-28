@@ -1,5 +1,7 @@
 package com.myron.db.jdbc.bean;
 
+import com.myron.db.jdbc.constants.JavaTypeEnum;
+
 import java.io.File;
 import java.util.List;
 
@@ -17,8 +19,8 @@ public class Table {
 	private List<Column> columnList;//属性列表
 	
 	//额外描述信息
-	//private String fileFormat;  //文件格式：java/xml
 	private String jspContextPath;//当前对象生成的页面的容器路径或请求路径
+	private String longClassName;
 
 	/**
 	 * java包转换为文件路径
@@ -26,17 +28,16 @@ public class Table {
 	 */
 	public String javaPackageToPath() {
 		// TODO 校验packageName 是否存在
-
-		// 如果java类型,添加src目录及子包目录
 		StringBuffer filePath = new StringBuffer();
-		filePath.append(File.separator + "src/main/java");
-
 		String[] paths = packageName.split("\\.");
 		for (int i = 0; i < paths.length; i++) {
 			filePath.append(File.separator + paths[i]);
 		}
 		return filePath.toString();
+	}
 
+	public void buildPackageByJavaType(JavaTypeEnum javaType){
+		this.packageName = this.projectName + "." + javaType.getPrefix();
 	}
 
 
@@ -60,11 +61,6 @@ public class Table {
 		return packageName;
 	}
 
-	public void setPackageName(String packageName) {
-		this.packageName = packageName;
-	}
-	
-	
 
 	public String getProjectName() {
 		return projectName;

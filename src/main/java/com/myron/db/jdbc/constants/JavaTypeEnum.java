@@ -12,10 +12,10 @@ public enum JavaTypeEnum {
 
     /**表对应实体对象*/
     BEAN("bean","JavaBean.java", "表对应实体对象"),
-    /**dao 源码*/
-    DAO("dao", "JavaDao.java", "dao对象"),
+    /**mapper 源码*/
+    DAO("mapper", "JavaMapper.java", "dao对象"),
     /**mapper xml 源码*/
-    MAPPER_XML("dao.mapper", "JavaMapper.xml", "dao.mapper"),
+    MAPPER_XML("mapper.xml", "JavaMapper.xml", "实体对象xml"),
     /**controller 源码*/
     CONTROLLER("controller", "JavaController.java", "controller"),
     /**service 源码*/

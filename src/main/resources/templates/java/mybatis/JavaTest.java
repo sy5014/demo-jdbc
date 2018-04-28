@@ -3,7 +3,7 @@ package ${table.packageName};
 import java.io.Serializable;
 import org.apache.commons.lang3.time.DateUtils;
 import ${table.projectName}.bean.${table.className};
-import ${table.projectName}.dao.${table.className}Dao;
+import ${table.projectName}.mapper.${table.className}Mapper;
 import ${table.projectName}.service.${table.className}Service;
 
 public class ${table.className}Test {
