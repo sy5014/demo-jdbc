@@ -6,7 +6,6 @@ import com.myron.db.jdbc.generator.MyronGenerator;
 import java.io.File;
 
 /**
- * ddd
  * @Author linrx1
  * @Date 2018/4/27.
  */
