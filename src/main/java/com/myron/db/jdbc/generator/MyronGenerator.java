@@ -304,9 +304,8 @@ public class MyronGenerator {
 									  JavaTypeEnum javaType) throws IOException {
 		String tempalteName = javaType.getTemplateName();
 		// 替换名称中的"Java"用具体的对象。如: JavaMapper->UserMapper
-		tempalteName.replace("Java",table.getClassName());
 		File sourceFile = null;
-		sourceFile = new File(filePath.getPath() + File.separator + tempalteName.replace("Java",table.getClassName()));
+		sourceFile = new File(filePath.getPath() + File.separator + tempalteName.replace("Bean",table.getClassName()));
 		if (sourceFile.exists()) {
 			sourceFile.delete();
 		}

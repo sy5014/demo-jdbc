@@ -6,6 +6,7 @@ import com.myron.db.jdbc.generator.MyronGenerator;
 import java.io.File;
 
 /**
+ * ddd
  * @Author linrx1
  * @Date 2018/4/27.
  */
@@ -25,8 +26,8 @@ public class JdbcApplication {
                 .password(password)
                 .templateLoaderPaths(new String[]{"classpath:templates/java/mybatis","classpath:templates/mybatis"})
                 .filePath("D:"+ File.separator+"temp")
-                .projectName("com.cnc.cloud")
-                .ignorePrefix(true)
+                .projectName("com.cnc.cloud.scale")
+                .ignorePrefix(false)
                 .javaTypeSet(JavaTypeEnum.allJavaType())
                 .build();
 

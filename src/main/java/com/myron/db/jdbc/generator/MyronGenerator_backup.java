@@ -429,19 +429,19 @@
 //		//TODO 文件类型对应模板的映射可通过配置文件定义
 //		String templateName = "";
 //		if (BEAN.equals(fileType)) {
-//			templateName = "JavaBean.java";
+//			templateName = "Bean.java";
 //		} else if (TEST.equals(fileType)) {
-//			templateName = "JavaTest.java";
+//			templateName = "BeanTest.java";
 //		} else if (DAO.equals(fileType)) {
-//			templateName = "JavaMapper.java";
+//			templateName = "BeanMapper.java";
 //		} else if (MAPPER_XML.equals(fileType)) {
-//			templateName = "JavaMapper.xml";
+//			templateName = "BeanMapper.xml";
 //		} else if (SERVICE.equals(fileType)) {
-//			templateName = "JavaService.java";
+//			templateName = "BeanService.java";
 //		} else if (SERVICE_IMPL.equals(fileType)) {
-//			templateName = "JavaServiceImpl.java";
+//			templateName = "BeanServiceImpl.java";
 //		} else if (CONTROLLER.equals(fileType)) {
-//			templateName = "JavaController.java";
+//			templateName = "BeanController.java";
 //		} else {
 //			templateName = "undefined";
 //		}
