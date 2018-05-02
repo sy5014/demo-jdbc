@@ -6,8 +6,6 @@ import org.apache.commons.lang3.StringUtils;
 <#list table.columnList as column>
 <#if column.javaType=="Date">
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import java.util.Date;
 <#break>
 </#if>
