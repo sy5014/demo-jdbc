@@ -26,12 +26,12 @@ public class JdbcApplication {
                 .password(password)
                 .templateLoaderPaths(new String[]{"classpath:templates/java/mybatis","classpath:templates/mybatis"})
                 .filePath("D:"+ File.separator+"temp")
-                .projectName("com.cnc.cloud.scale")
+                .projectName("com.cnc.cloud.console")
                 .ignorePrefix(false)
                 .javaTypeSet(JavaTypeEnum.allJavaType())
                 .build();
 
         // 生成代码
-        generator.generateAndTestCase("DNS_DOMAIN", 5038);
+        generator.generateAndTestCase("dns_domain_share", 1);
     }
 }
